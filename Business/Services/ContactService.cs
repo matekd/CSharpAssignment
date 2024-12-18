@@ -1,5 +1,4 @@
 ﻿using Business.Factories;
-using Business.Helpers;
 using Business.Interfaces;
 using Business.Models;
 using System.Diagnostics;
@@ -38,7 +37,9 @@ public class ContactService : IContactService
     {
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;
 
-        return _contacts.Remove(ce); ;
+        if (!_contacts.Remove(ce)) return false;
+
+        return _fileService.SaveListToFile(_contacts);
     }
 
     public Contact GetContactById(string id)
@@ -46,23 +47,19 @@ public class ContactService : IContactService
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;
         
         if (ce == null)
-            throw new Exception("User does not exist");
+            throw new Exception("Contact does not exist");
 
         Contact c = ContactFactory.Create(ce);
 
         return c;
     }
 
-    public IEnumerable<Contact> GetContacts()
+    public IEnumerable<Contact> GetAllContacts()
     {
-        List<Contact> list = [];
+        if (_contacts == null)
+            throw new Exception("No contacts exist");
 
-        foreach (ContactEntity ce in _contacts)
-        {
-            list.Add(ContactFactory.Create(ce));
-        }
-
-        return list;
+        return _contacts.Select(ContactFactory.Create);
     }
 
     public bool UpdateContact(ContactRegistrationForm form, string id)
@@ -70,16 +67,16 @@ public class ContactService : IContactService
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;
 
         if (ce == null)
-            throw new Exception("User does not exist");
+            throw new Exception("Contact does not exist");
 
-        ce.FirstName  = form.FirstName  ?? ce.FirstName;
-        ce.LastName   = form.LastName   ?? ce.LastName;
-        ce.Email      = form.Email      ?? ce.Email;
-        ce.Phone      = form.Phone      ?? ce.Phone;
-        ce.Address    = form.Address    ?? ce.Address;
-        ce.Region     = form.Region     ?? ce.Region;
-        ce.PostalCode = form.PostalCode ?? ce.PostalCode;
-
-        return true;
+        ce.FirstName  = string.IsNullOrEmpty(form.FirstName)  ? ce.FirstName  : form.FirstName;
+        ce.LastName   = string.IsNullOrEmpty(form.LastName)   ? ce.LastName   : form.LastName;
+        ce.Email      = string.IsNullOrEmpty(form.Email)      ? ce.Email      : form.Email;
+        ce.Phone      = string.IsNullOrEmpty(form.Phone)      ? ce.Phone      : form.Phone;
+        ce.Address    = string.IsNullOrEmpty(form.Address)    ? ce.Address    : form.Address;
+        ce.Region     = string.IsNullOrEmpty(form.Region)     ? ce.Region     : form.Region;
+        ce.PostalCode = string.IsNullOrEmpty(form.PostalCode) ? ce.PostalCode : form.PostalCode;
+                                                                         
+        return _fileService.SaveListToFile(_contacts);
     }
 }

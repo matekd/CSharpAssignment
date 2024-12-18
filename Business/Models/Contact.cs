@@ -10,4 +10,9 @@ public class Contact
     public string Address { get; set; } = null!;
     public string Region { get; set; } = null!;
     public string PostalCode { get; set; } = null!;
+
+    public override string ToString()
+    {
+        return $"{FirstName} {LastName} {Email} {Phone} {Address} {Region} {PostalCode}";
+    }
 }
