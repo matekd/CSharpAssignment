@@ -15,7 +15,8 @@ var host = Host.CreateDefaultBuilder()
     })
     .Build();
 
-using (var scope = host.Services.CreateScope()) {
+using (var scope = host.Services.CreateScope())
+{
     var mainMenuDialog = scope.ServiceProvider.GetService<IMainMenuDialog>()!;
     mainMenuDialog.Run();
 }

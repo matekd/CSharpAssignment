@@ -31,6 +31,12 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
         Console.Write("\nChoose your menu option: ");
 
         var option = Console.ReadLine()!;
+        
+        if ( option == null )
+        {
+            InvalidOption();
+            return;
+        }
 
         switch (option.ToLower())
         {
@@ -103,7 +109,7 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
 
         foreach (var c in list)
         {
-            Console.WriteLine($"- {c.ToString()}");
+            Console.WriteLine($"- {c}");
         }
 
         Console.ReadKey();
@@ -112,27 +118,35 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
     {
         IEnumerable<Contact> list = _contactService.GetAllContacts();
 
-        Console.Clear();
-        Console.WriteLine("####### Contacts #######\n");
-
         int i;
         while (true)
         {
+            Console.Clear();
+            Console.WriteLine("####### Contacts #######\n");
+
             i = 1;
             foreach (var c in list)
             {
-                Console.WriteLine($"[{i++}] {c.ToString()}");
+                Console.WriteLine($"[{i++}] {c}");
             }
 
-            Console.Write("\nType the number of the contact to delete: ");
+            Console.Write("\nType the number of the contact to delete, or 'q' to exit: ");
             var option = Console.ReadLine();
+
+            if (option == null)
+            {
+                InvalidOption();
+                continue;
+            }
+
+            if (option.ToLower().Equals("q")) return;
 
             if (!int.TryParse(option, out int num))
             {
                 InvalidOption();
                 continue;
             }
-
+            
             if (num < 0 || num > list.Count())
             {
                 InvalidOption();
@@ -142,7 +156,7 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
             if (result)
                 OutputDialog("Contact was successfully deleted.");
             else 
-                OutputDialog("\"Contact was not deleted successfully.\"");
+                OutputDialog("Contact was not deleted successfully.");
             break;
         }
     }
@@ -151,20 +165,28 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
     {
         IEnumerable<Contact> list = _contactService.GetAllContacts();
 
-        Console.Clear();
-        Console.WriteLine("####### Contacts #######\n");
-
         int i;
         while (true)
         {
+            Console.Clear();
+            Console.WriteLine("####### Contacts #######\n");
+
             i = 1;
             foreach (var c in list)
             {
-                Console.WriteLine($"[{i++}] {c.ToString()}");
+                Console.WriteLine($"[{i++}] {c}");
             }
 
-            Console.Write("\nType the number of the contact to update: ");
+            Console.Write("\nType the number of the contact to update, or 'q' to exit: ");
             var option = Console.ReadLine();
+
+            if (option == null)
+            {
+                InvalidOption();
+                continue;
+            }
+
+            if (option.ToLower().Equals("q")) return;
 
             if (!int.TryParse(option, out int num))
             {
@@ -202,7 +224,7 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
             if (result)
                 OutputDialog("Contact was successfully updated.");
             else
-                OutputDialog("\"Contact was not updated successfully.\"");
+                OutputDialog("Contact was not updated successfully.");
             break;
         }
     }
