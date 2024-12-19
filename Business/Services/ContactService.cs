@@ -22,8 +22,11 @@ public class ContactService : IContactService
         {
             ContactEntity ce = ContactFactory.Create(form);
             _contacts.Add(ce);
-            _fileService.SaveListToFile(_contacts);
-
+            if (!_fileService.SaveListToFile(_contacts))
+            {
+                _contacts.Remove(ce);
+                return false;
+            }
             return true;
         }
         catch (Exception ex)
@@ -37,26 +40,16 @@ public class ContactService : IContactService
     {
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;
 
+        if (ce == null) throw new Exception("Contact does not exist");
+
         if (!_contacts.Remove(ce)) return false;
 
         return _fileService.SaveListToFile(_contacts);
     }
 
-    public Contact GetContactById(string id)
-    {
-        ContactEntity ce = _contacts.Find(e => e.Id == id)!;
-        
-        if (ce == null)
-            throw new Exception("Contact does not exist");
-
-        Contact c = ContactFactory.Create(ce);
-
-        return c;
-    }
-
     public IEnumerable<Contact> GetAllContacts()
     {
-        if (_contacts == null)
+        if (_contacts == null || _contacts.Count() == 0)
             throw new Exception("No contacts exist");
 
         return _contacts.Select(ContactFactory.Create);
@@ -66,17 +59,24 @@ public class ContactService : IContactService
     {
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;
 
-        if (ce == null)
-            throw new Exception("Contact does not exist");
+        if (ce == null) throw new Exception("Contact does not exist");
 
-        ce.FirstName  = string.IsNullOrEmpty(form.FirstName)  ? ce.FirstName  : form.FirstName;
-        ce.LastName   = string.IsNullOrEmpty(form.LastName)   ? ce.LastName   : form.LastName;
-        ce.Email      = string.IsNullOrEmpty(form.Email)      ? ce.Email      : form.Email;
-        ce.Phone      = string.IsNullOrEmpty(form.Phone)      ? ce.Phone      : form.Phone;
-        ce.Address    = string.IsNullOrEmpty(form.Address)    ? ce.Address    : form.Address;
-        ce.Region     = string.IsNullOrEmpty(form.Region)     ? ce.Region     : form.Region;
-        ce.PostalCode = string.IsNullOrEmpty(form.PostalCode) ? ce.PostalCode : form.PostalCode;
-                                                                         
+        try
+        {
+            ce.FirstName = string.IsNullOrEmpty(form.FirstName) ? ce.FirstName : form.FirstName;
+            ce.LastName = string.IsNullOrEmpty(form.LastName) ? ce.LastName : form.LastName;
+            ce.Email =  string.IsNullOrEmpty(form.Email) ? ce.Email : form.Email;
+            ce.Phone = string.IsNullOrEmpty(form.Phone) ? ce.Phone : form.Phone;
+            ce.Address = string.IsNullOrEmpty(form.Address) ? ce.Address : form.Address;
+            ce.Region = string.IsNullOrEmpty(form.Region) ? ce.Region : form.Region;
+            ce.PostalCode = string.IsNullOrEmpty(form.PostalCode) ? ce.PostalCode : form.PostalCode;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return false;
+        }
+
         return _fileService.SaveListToFile(_contacts);
     }
 }

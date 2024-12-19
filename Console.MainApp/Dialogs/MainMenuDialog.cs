@@ -102,14 +102,21 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
     }
     private void ViewOption()
     {
-        IEnumerable<Contact> list = _contactService.GetAllContacts();
-
-        Console.Clear();
-        Console.WriteLine("####### Contacts #######\n");
-
-        foreach (var c in list)
+        try
         {
-            Console.WriteLine($"- {c}");
+            IEnumerable<Contact> list = _contactService.GetAllContacts();
+
+            Console.Clear();
+            Console.WriteLine("####### Contacts #######\n");
+
+            foreach (var c in list)
+            {
+                Console.WriteLine($"- {c}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
         }
 
         Console.ReadKey();
@@ -152,12 +159,22 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
                 InvalidOption();
                 continue;
             }
-            bool result = _contactService.DeleteContact( list.ElementAt(num - 1).Id );
-            if (result)
-                OutputDialog("Contact was successfully deleted.");
-            else 
-                OutputDialog("Contact was not deleted successfully.");
-            break;
+            
+            try
+            {
+                bool result = _contactService.DeleteContact( list.ElementAt(num - 1).Id );
+
+                if (result)
+                    OutputDialog("Contact was successfully deleted.");
+                else 
+                    OutputDialog("Contact was not deleted successfully.");
+                break;
+            }
+            catch (Exception ex)
+            {
+                OutputDialog(ex.Message);
+                break;
+            }
         }
     }
 
@@ -219,13 +236,22 @@ public class MainMenuDialog : MenuDialog, IMainMenuDialog
             form.Region = Console.ReadLine()!;
             Console.Write("Enter PostalCode (Or Leave blank to skip): ");
             form.PostalCode = Console.ReadLine()!;
+            
+            try
+            {
+                bool result = _contactService.UpdateContact(form, list.ElementAt(num - 1).Id);
 
-            bool result = _contactService.UpdateContact(form, list.ElementAt(num - 1).Id);
-            if (result)
-                OutputDialog("Contact was successfully updated.");
-            else
-                OutputDialog("Contact was not updated successfully.");
-            break;
+                if (result)
+                    OutputDialog("Contact was successfully updated.");
+                else
+                    OutputDialog("Contact was not updated successfully.");
+                break;
+            }
+            catch (Exception ex)
+            {
+                OutputDialog(ex.Message);
+                break;
+            }
         }
     }
 }
