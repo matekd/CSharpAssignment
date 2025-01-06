@@ -8,4 +8,5 @@ public interface IContactService
     public bool UpdateContact(ContactRegistrationForm form, string id);
     public bool DeleteContact(string id);
     public IEnumerable<Contact> GetAllContacts();
+    public Contact GetContactByID(string id);
 }

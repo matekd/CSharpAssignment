@@ -55,6 +55,16 @@ public class ContactService : IContactService
         return _contacts.Select(ContactFactory.Create);
     }
 
+    public Contact GetContactByID(string id)
+    {
+        ContactEntity ce = _contacts.Find(e => e.Id == id)!;
+
+        if (ce == null)
+            throw new Exception("Contact does not exist");
+
+        return ContactFactory.Create(ce);
+    }
+
     public bool UpdateContact(ContactRegistrationForm form, string id)
     {
         ContactEntity ce = _contacts.Find(e => e.Id == id)!;

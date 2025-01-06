@@ -23,7 +23,7 @@ public class ContactService_Tests
     public void AddContact_ShouldReturnTrue_WhenCreatingContact()
     {
         // arrange
-        ContactRegistrationForm form = new ContactRegistrationForm
+        ContactRegistrationForm form = new()
         {
             FirstName = "Test",
             LastName = "Test",
@@ -219,6 +219,51 @@ public class ContactService_Tests
 
         // act
         Exception e = Assert.Throws<Exception>(() => _contactServiceMock.Object.UpdateContact(form, It.IsAny<string>()));
+
+        // assert
+        Assert.Equal("Contact does not exist", e.Message);
+    }
+    #endregion
+
+    #region GetContactById
+    [Fact]
+    public void GetContactById_ShouldReturnContact()
+    {
+        // arrange
+        string id = "1";
+        Contact contact = new()
+        {
+            Id = id,
+            FirstName = "Test",
+            LastName = "Test",
+            Email = "Test",
+            Phone = "Test",
+            Address = "Test",
+            Region = "Test",
+            PostalCode = "Test",
+        };
+        _contactServiceMock
+            .Setup(cs => cs.GetContactByID(id))
+            .Returns(contact);
+
+        // act
+        var result = _contactServiceMock.Object.GetContactByID(id);
+
+        // assert
+        Assert.IsType<Contact>(result);
+        Assert.Equal(id, result.Id);
+        _contactServiceMock.Verify(cs => cs.GetContactByID(id), Times.Once);
+    }
+
+    [Fact]
+    public void GetContactById_ShouldThrowException_IfIdDoesNotExist()
+    {
+        // arrange
+        Exception exc = new Exception("Contact does not exist");
+        _contactServiceMock.Setup(cs => cs.GetContactByID(It.IsAny<string>())).Throws(exc);
+
+        // act
+        Exception e = Assert.Throws<Exception>(() => _contactServiceMock.Object.GetContactByID(It.IsAny<string>()));
 
         // assert
         Assert.Equal("Contact does not exist", e.Message);
