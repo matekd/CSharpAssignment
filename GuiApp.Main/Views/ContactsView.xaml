@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:ContactsViewModel}"
              
              Background="LightGray"
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="500" d:DesignWidth="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -19,9 +19,9 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="Contacts" FontSize="20" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Margin="0 10" Text="Contacts" FontSize="20" FontWeight="Bold"/>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding Contacts}" Margin="0,15,0,5" HorizontalContentAlignment="Stretch">
+        <ListView Grid.Row="1" ItemsSource="{Binding Contacts}" Margin="0 5" HorizontalContentAlignment="Stretch">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="models:ContactItem">
                     <Grid>
@@ -36,7 +36,7 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="..." Padding="10 0"/>
+                            <Button CommandParameter="{Binding .}" Command="{Binding DataContext.GoToContactDetailsCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="..." Padding="10 0"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

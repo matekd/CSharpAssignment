@@ -10,6 +10,21 @@ public static class ContactFactory
         return new ContactRegistrationForm();
     }
 
+    public static ContactRegistrationForm Create(Contact contact)
+    {
+        ContactRegistrationForm form = new()
+        {
+            FirstName = contact.FirstName,
+            LastName = contact.LastName,
+            Email = contact.Email,
+            Phone = contact.Phone,
+            Address = contact.Address,
+            Region = contact.Region,
+            PostalCode = contact.PostalCode,
+        };
+        return form;
+    }
+
     public static ContactEntity Create(ContactRegistrationForm form)
     {
         ContactEntity ce = new()

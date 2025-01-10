@@ -10,18 +10,44 @@
          
              Background="LightGray"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="500" d:DesignWidth="400">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel>
-            <TextBlock Text="{Binding Title}"/>
+        <TextBlock Grid.Row="0" Margin="0 10" Text="Edit Contact" FontSize="20" FontWeight="Bold"/>
+
+        <StackPanel Grid.Row="1" Margin="0 5">
+            <TextBlock Text="First name:"/>
+            <TextBox Text="{Binding Contact.FirstName}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Last name:"/>
+            <TextBox Text="{Binding Contact.LastName}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Email Address:"/>
+            <TextBox Text="{Binding Contact.Email}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Phone Number:"/>
+            <TextBox Text="{Binding Contact.Phone}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Address:"/>
+            <TextBox Text="{Binding Contact.Address}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Region:"/>
+            <TextBox Text="{Binding Contact.Region}" Margin="0,0,0,5" Padding="5"/>
+
+            <TextBlock Text="Postal Code:"/>
+            <TextBox Text="{Binding Contact.PostalCode}" Margin="0,0,0,5" Padding="5"/>
+
+            <Button Content="Save Changes" Padding="5" Command="{Binding SaveCommand}" Margin="0 5"/>
+
+            <Button Content="Remove" Padding="5" Command="{Binding DeleteCommand}"/>
         </StackPanel>
 
-        <Button Grid.Row="1" Padding="5" Content="Add new Contact"/>
+        <Button Grid.Row="2" Padding="5" Content="Cancel" Command="{Binding GoToMainCommand}"/>
 
     </Grid>
 </UserControl>
