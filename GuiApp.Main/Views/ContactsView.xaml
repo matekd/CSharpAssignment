@@ -5,9 +5,45 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GuiApp.Main.Views"
              mc:Ignorable="d" 
-             Background="White"
+             
+             xmlns:models="clr-namespace:Business.Models;assembly=Business"
+             xmlns:viewmodels="clr-namespace:GuiApp.Main.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ContactsViewModel}"
+             
+             Background="LightGray"
              d:DesignHeight="450" d:DesignWidth="400">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Contacts" FontSize="20" FontWeight="Bold"/>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding Contacts}" Margin="0,15,0,5" HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate DataType="models:ContactItem">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding FullName}"/>
+                            <TextBlock Text="{Binding Email}" FontSize="10"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button Content="..." Padding="10 0"/>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="2" Padding="5" Content="Add new Contact" Command="{Binding GoToAddContactCommand}"/>
+
     </Grid>
 </UserControl>

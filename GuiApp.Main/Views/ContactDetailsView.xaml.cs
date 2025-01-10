@@ -2,9 +2,9 @@
 
 namespace GuiApp.Main.Views;
 
-public partial class ContactsView : UserControl
+public partial class ContactDetailsView : UserControl
 {
-    public ContactsView()
+    public ContactDetailsView()
     {
         InitializeComponent();
     }

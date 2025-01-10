@@ -11,6 +11,9 @@ public class Contact
     public string Region { get; set; } = null!;
     public string PostalCode { get; set; } = null!;
 
+    public string FullName { 
+        get { return $"{FirstName} {LastName}"; } 
+    }
     public override string ToString()
     {
         return $"{FirstName} {LastName} {Email} {Phone} {Address} {Region} {PostalCode}";

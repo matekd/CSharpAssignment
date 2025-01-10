@@ -9,15 +9,29 @@
         xmlns:viewmodels="clr-namespace:GuiApp.Main.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         
+        WindowStartupLocation="CenterScreen"
+        Background="LightGray"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
-    <Grid>
-
+        Title="MainWindow" Height="600" Width="400">
+    <Grid Margin="5">
+        
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
 
                 <DataTemplate DataType="{x:Type viewmodels:ContactsViewModel}">
                     <views:ContactsView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewmodels:AddContactViewModel}">
+                    <views:AddContactView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewmodels:ContactDetailsViewModel}">
+                    <views:ContactDetailsView/>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type viewmodels:UpdateContactViewModel}">
+                    <views:UpdateContactView/>
                 </DataTemplate>
 
             </ContentControl.Resources>
