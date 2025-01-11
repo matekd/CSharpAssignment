@@ -35,6 +35,10 @@ public partial class ContactsViewModel : ObservableObject
     {
         _serviceProvider = serviceProvider;
         _contactService = contactService;
-        _contacts = new ObservableCollection<Contact>(_contactService.GetAllContacts());
+        try
+        {
+            _contacts = new ObservableCollection<Contact>(_contactService.GetAllContacts());
+        }
+        catch { }
     }
 }

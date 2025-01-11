@@ -26,16 +26,30 @@ public partial class UpdateContactViewModel(IServiceProvider serviceProvider, IC
     private void Save()
     {
         ContactRegistrationForm form = ContactFactory.Create(Contact);
-        var result = _contactService.UpdateContact(form, Contact.Id);
+        try
+        {
+            var result = _contactService.UpdateContact(form, Contact.Id);
 
-        if (result) GoToMain();
+            if (result) GoToMain();
+        }
+        catch
+        {
+            GoToMain();
+        }
     }
 
     [RelayCommand]
     private void Delete()
     {
-        var result = _contactService.DeleteContact(Contact.Id);
+        try
+        {
+            var result = _contactService.DeleteContact(Contact.Id);
 
-        if (result) GoToMain();
+            if (result) GoToMain();
+        }
+        catch
+        {
+            GoToMain();
+        }
     }
 }

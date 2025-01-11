@@ -1,5 +1,4 @@
-﻿using Business.Interfaces;
-using Business.Models;
+﻿using Business.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
