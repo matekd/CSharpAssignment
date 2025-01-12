@@ -143,7 +143,6 @@ public class ContactService_Tests
 
         // assert
         Assert.False(result);
-
     }
 
     [Fact]
@@ -158,7 +157,6 @@ public class ContactService_Tests
 
         // assert
         Assert.Equal("Contact does not exist", e.Message);
-
     }
     #endregion
 
